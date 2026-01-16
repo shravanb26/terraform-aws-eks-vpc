@@ -29,12 +29,12 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ${{ env.TF_VERSION }}
       
       - name: Cache Terraform plugins
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.terraform.d/plugin-cache
           key: ${{ runner.os }}-terraform-${{ env.TF_VERSION }}-${{ hashFiles('**/.terraform.lock.hcl') }}
@@ -65,7 +65,7 @@ jobs:
       
       - name: Upload Plan
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tfplan
           path: tfplan

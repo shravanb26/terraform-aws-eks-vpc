@@ -11,12 +11,12 @@ variable "cluster_name" {
 }
 
 variable "cluster_version" {
-  type = string
+  type        = string
   description = "version of eks cluster"
 }
 
 variable "vpc_cidr" {
-  type = string
+  type        = string
   description = "CIDR block for VPC"
-  default = "11.1.0.0/16"
+  default     = "11.1.0.0/16"
 }

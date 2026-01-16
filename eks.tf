@@ -10,11 +10,11 @@ module "eks" {
 
   managed_node_groups = {
     demo-group = {
-      name             = "public-ng"
-      desired_size = 2
-      max_size     = 3
-      min_size     = 1
-      instance_types   = ["t3a.small"]
+      name           = "public-ng"
+      desired_size   = 2
+      max_size       = 3
+      min_size       = 1
+      instance_types = ["t3a.small"]
     }
   }
 }

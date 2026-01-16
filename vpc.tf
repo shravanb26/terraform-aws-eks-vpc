@@ -1,4 +1,3 @@
-#module for vpc
 module "vpc" {
   source = "./modules/vpc"
 

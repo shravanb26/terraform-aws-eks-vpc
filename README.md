@@ -293,7 +293,7 @@ Addons are AWS-managed Kubernetes extensions that provide essential cluster func
 ## Project Structure
 
 ```
-terraform-vpc-eks-module-ex2/
+terraform-aws-eks-vpc/
 ├── README.md                           # This file
 ├── backend.tf                          # Remote state configuration (S3)
 ├── provider.tf                         # AWS provider configuration
@@ -447,7 +447,7 @@ kubectl version --client
 ### 1. Initialize Terraform
 
 ```bash
-cd terraform-vpc-eks-module-ex2
+cd terraform-aws-eks-vpc
 terraform init -upgrade
 ```
 

@@ -8,17 +8,19 @@ on:
 
 env:
   AWS_REGION: us-east-1
+  TF_VERSION: 1.5.0
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     
     permissions:
       id-token: write
       contents: read
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -29,20 +31,49 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.5.0
+          terraform_version: ${{ env.TF_VERSION }}
+      
+      - name: Cache Terraform plugins
+        uses: actions/cache@v3
+        with:
+          path: ~/.terraform.d/plugin-cache
+          key: ${{ runner.os }}-terraform-${{ env.TF_VERSION }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-${{ env.TF_VERSION }}-
+            ${{ runner.os }}-terraform-
       
       - name: Terraform Format Check
-        run: terraform fmt -check
+        run: terraform fmt -check -recursive
       
       - name: Terraform Init
-        run: terraform init
+        env:
+          TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
+        run: |
+          echo "Initializing Terraform..."
+          terraform init -upgrade=false
       
       - name: Terraform Validate
         run: terraform validate
       
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        env:
+          TF_LOG: INFO
+        run: |
+          echo "Starting Terraform Plan..."
+          terraform plan -out=tfplan -input=false
+          echo "Plan completed successfully"
+      
+      - name: Upload Plan
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: tfplan
+          path: tfplan
+          retention-days: 1
       
       - name: Terraform Apply
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: terraform apply -auto-approve tfplan
+        run: |
+          echo "Starting Terraform Apply..."
+          terraform apply -auto-approve tfplan
+          echo "Apply completed successfully"

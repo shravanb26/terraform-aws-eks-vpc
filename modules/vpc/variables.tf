@@ -1,6 +1,6 @@
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
-  type = string
+  type        = string
 }
 
 # variable "public_subnet_cidrs" {
@@ -17,8 +17,8 @@ variable "vpc_cidr" {
 
 variable "subnet_cidr_bits" {
   description = "The number of subnet bits for the CIDR"
-  type = number
-  default = 8
+  type        = number
+  default     = 8
 }
 
 # variable "azs" {
@@ -29,24 +29,24 @@ variable "subnet_cidr_bits" {
 
 variable "availability_zone_count" {
   description = "number of azs"
-  type = number
-  default = 3
+  type        = number
+  default     = 3
 }
 
 variable "enable_dns_hostnames" {
   description = "Enable DNS hostnames in VPC"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "enable_dns_support" {
   description = "Enable DNS support"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "tags" {
   description = "apply tags to all resources"
-  type = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
 }
